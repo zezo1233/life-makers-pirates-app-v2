@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Installing dependencies..."
+echo "🔧 Installing dev dependencies..."
 
 npm install --save-dev \
   eslint \
@@ -8,6 +8,7 @@ npm install --save-dev \
   jest \
   @types/jest \
   ts-jest \
-  typescript
+  typescript \
+  jest-environment-jsdom
 
-echo "✅ Dev dependencies installed."
+echo "✅ All tools installed successfully!"
