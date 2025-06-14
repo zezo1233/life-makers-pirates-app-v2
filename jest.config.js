@@ -19,7 +19,7 @@ module.exports = {
     '^.+\\.(js|jsx)$': 'babel-jest'
   },
   testEnvironment: 'jsdom',
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
   transformIgnorePatterns: [
