@@ -45,6 +45,7 @@ const ChatNavigator: React.FC = () => {
         component={ChatListScreen}
         options={{
           title: t('chat.messages'),
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -52,6 +53,7 @@ const ChatNavigator: React.FC = () => {
         component={ChatRoomScreen}
         options={({ route }) => ({
           title: route.params.roomName,
+          headerShown: false,
         })}
       />
       <Stack.Screen
