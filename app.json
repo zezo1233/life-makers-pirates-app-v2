@@ -1,0 +1,92 @@
+{
+  "expo": {
+    "name": "Life Makers Pirates",
+    "slug": "life-makers-pirates-training",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "lifemakerspirates",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#667eea"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lifemakerspirates.trainersapp",
+      "buildNumber": "1.0.0",
+      "requireFullScreen": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#667eea"
+      },
+      "package": "com.lifemakerspirates.trainersapp",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "NOTIFICATIONS",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ],
+      "softwareKeyboardLayoutMode": "pan"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-localization",
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "development",
+          "devTeam": "YOUR_APPLE_DEV_TEAM_ID",
+          "iPhoneDeploymentTarget": "11.0"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "98976d89-0f58-4fa3-a63e-72c49310789e",
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "targetName": "OneSignalNotificationServiceExtension",
+                  "bundleIdentifier": "com.lifemakerspirates.trainersapp.OneSignalNotificationServiceExtension",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.com.lifemakerspirates.trainersapp.onesignal"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "oneSignalAppId": "aca0498c-0153-4296-80dd-31d1d53c8d1b"
+    },
+    "owner": "zeyad2047",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/98976d89-0f58-4fa3-a63e-72c49310789e"
+    }
+  }
+}

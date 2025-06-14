@@ -1,0 +1,111 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run tests
+      run: npm test -- --coverage --watchAll=false
+      
+    - name: Build release notes
+      id: release_notes
+      run: |
+        echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
+        echo "## 🚀 Life Makers Pirates Training Management System" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "### 📱 Mobile Application Release" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "**Version:** ${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        echo "**Release Date:** $(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "### ✨ Features" >> $GITHUB_OUTPUT
+        echo "- 7-stage training request workflow" >> $GITHUB_OUTPUT
+        echo "- Interactive calendar system" >> $GITHUB_OUTPUT
+        echo "- Real-time chat system" >> $GITHUB_OUTPUT
+        echo "- Bilingual support (Arabic/English)" >> $GITHUB_OUTPUT
+        echo "- AI-powered trainer recommendations" >> $GITHUB_OUTPUT
+        echo "- Push notifications" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "### 🛠 Technical Stack" >> $GITHUB_OUTPUT
+        echo "- React Native with Expo" >> $GITHUB_OUTPUT
+        echo "- TypeScript" >> $GITHUB_OUTPUT
+        echo "- Supabase Backend" >> $GITHUB_OUTPUT
+        echo "- Zustand State Management" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "### 📋 Installation" >> $GITHUB_OUTPUT
+        echo "1. Download the APK file for Android" >> $GITHUB_OUTPUT
+        echo "2. Enable installation from unknown sources" >> $GITHUB_OUTPUT
+        echo "3. Install the APK" >> $GITHUB_OUTPUT
+        echo "4. Launch the app and register/login" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "### 🔐 Test Users" >> $GITHUB_OUTPUT
+        echo "- DV: dv@lifemakers.com / password123" >> $GITHUB_OUTPUT
+        echo "- PM: pm@lifemakers.com / password123" >> $GITHUB_OUTPUT
+        echo "- TR: tr1@lifemakers.com / password123" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+        
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Life Makers Pirates Training v${{ github.ref }}
+        body: ${{ steps.release_notes.outputs.RELEASE_NOTES }}
+        draft: false
+        prerelease: false
+
+  build-and-upload:
+    name: Build and Upload Assets
+    runs-on: ubuntu-latest
+    needs: create-release
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Setup Expo CLI
+      run: npm install -g @expo/cli
+      
+    - name: Build Android APK
+      run: expo build:android --type apk --no-wait
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        
+    - name: Upload APK to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: ./life-makers-pirates-training.apk
+        asset_name: life-makers-pirates-training-${{ github.ref }}.apk
+        asset_content_type: application/vnd.android.package-archive
