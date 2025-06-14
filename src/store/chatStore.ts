@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
   supabase,
   fetchRecords,
@@ -44,7 +46,9 @@ interface ChatState {
   clearMessages: (roomId: string) => void;
 }
 
-export const useChatStore = create<ChatState>((set, get) => ({
+export const useChatStore = create<ChatState>()(
+  persist(
+    (set, get) => ({
   chatRooms: [],
   messages: {},
   activeUsers: {},
@@ -396,4 +400,14 @@ export const useChatStore = create<ChatState>((set, get) => ({
       messages: { ...state.messages, [roomId]: [] }
     }));
   },
-}));
+    }),
+    {
+      name: 'chat-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+      partialize: state => ({
+        chatRooms: state.chatRooms,
+        messages: state.messages,
+      }),
+    }
+  )
+);
