@@ -24,7 +24,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.lifemakerspirates.trainersapp",
       "buildNumber": "1.0.0",
-      "requireFullScreen": false
+      "requireFullScreen": false,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
